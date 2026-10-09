@@ -1,15 +1,15 @@
 Java 3 – RideShare
 Prova 1: Lista e udhëtimeve
 
-Hapat: Hapa faqen kryesore të aplikacionit në shfletues.
-Rezultati: Kontrollova nëse shfaqen tri kartat e udhëtimeve dhe lidhjet “Shiko detajet”.
+Hapat: Hapa faqen kryesore të RideShare në shfletues dhe kontrollova listën e udhëtimeve.
+Rezultati real: Shkruaj këtu sa karta u shfaqën dhe nëse lidhjet “Shiko detajet” funksionuan.
 
 Prova 2: Detajet e udhëtimit
 
-Hapat: Klikova “Shiko detajet” te një kartë udhëtimi.
-Rezultati: Kontrollova nëse hapet faqja e duhur dhe shfaqen të dhënat e udhëtimit.
+Hapat: Klikova “Shiko detajet” te një udhëtim dhe kontrollova faqen e detajeve.
+Rezultati real: Shkruaj nëse faqja u hap dhe cilat të dhëna të udhëtimit u shfaqën.
 
 Prova 3: Kërkesa për udhëtim
 
-Hapat: Nga faqja e detajeve klikova “Kërko vend”, nëse kishte vende të lira.
-Rezultati: Kontrollova nëse faqja e kërkesës shfaq mesazhin “Simulim: Në pritje”.
+Hapat: Hapa detajet e një udhëtimi me vende të lira dhe provova “Kërko vend”.
+Rezultati real: Shkruaj nëse u hap faqja e kërkesës dhe nëse u shfaq “Simulim: Në pritje”.
