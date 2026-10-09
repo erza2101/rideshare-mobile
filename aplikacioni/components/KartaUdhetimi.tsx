@@ -1,5 +1,13 @@
 import Link from "next/link";
-import type { Udhetim } from "../udhetimet";
+
+type Udhetim = {
+  id: string | number;
+  nisja: string;
+  destinacioni: string;
+  ora: string;
+  vende: number | string;
+  vendtakimi: string;
+};
 
 export default function KartaUdhetimi({
   udhetim,
