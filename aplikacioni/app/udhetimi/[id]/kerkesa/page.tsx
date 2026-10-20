@@ -1,50 +1,65 @@
+import { Suspense } from "react";
+import Link from "next/link";
+import { connection } from "next/server";
+import { notFound } from "next/navigation";
 import { gjejUdhetimin } from "@/lib/udhetimet";
 
+type Parametrat = {
+  params: Promise<{ id: string }>;
+};
 
-export default async function FaqjaKerkeses({
-params,
-}: {
-params: Promise<{ id: string }>;
-}) {
-const { id } = await params;
-const udhetim = await gjejUdhetimin(id);
-
-if (!udhetim) {
-return (
-<main className="p-6">
-<h1>Udhëtimi nuk u gjet</h1>
-</main>
-);
+export default function FaqjaKerkeses({ params }: Parametrat) {
+  return (
+    <Suspense
+      fallback={
+        <main className="p-6">
+          <p>Po ngarkohet kërkesa...</p>
+        </main>
+      }
+    >
+      <FormaKerkeses params={params} />
+    </Suspense>
+  );
 }
 
-if (udhetim.vende <= 0) {
-return (
-<main className="p-6">
-<h1>Nuk ka vende të lira</h1>
-</main>
-);
-}
+async function FormaKerkeses({ params }: Parametrat) {
+  const { id } = await params;
+  await connection();
+  let udhetim;
 
-return (
-<main className="p-6">
-<h1>Kërko vend në udhëtim</h1>
-<p>{udhetim.nisja} – {udhetim.destinacioni}</p>
-<p>Ora: {udhetim.ora}</p>
+  try {
+    udhetim = await gjejUdhetimin(id);
+  } catch (error) {
+    console.error("Gabim gjatë leximit të udhëtimit për kërkesën:", error);
 
-  <form action={`/udhetimi/${id}/kerkesa`} method="get">
-    <label>
-      Emri:
-      <input name="emri" required />
-    </label>
-    <br />
-    <label>
-      Numri i telefonit:
-      <input name="telefoni" type="tel" required />
-    </label>
-    <br />
-    <button type="submit">Dërgo kërkesën</button>
-  </form>
-</main>
+    return (
+      <main className="p-6">
+        <h1>RideShare</h1>
+        <p role="alert">Nuk u lidhëm me databazën. Provo përsëri.</p>
+        <Link href="/">← Kthehu te lista</Link>
+      </main>
+    );
+  }
 
-);
+  if (!udhetim) notFound();
+
+  if (udhetim.vende <= 0) {
+    return (
+      <main className="p-6">
+        <Link href={`/udhetimi/${id}`}>← Kthehu te detajet</Link>
+        <h1>Nuk ka vende të lira</h1>
+      </main>
+    );
+  }
+
+  return (
+    <main className="p-6">
+      <Link href={`/udhetimi/${id}`}>← Kthehu te detajet</Link>
+      <h1>Simulim: Në pritje</h1>
+      <p>
+        Kërkesa për {udhetim.nisja} nuk është dërguar te shoferi.
+      </p>
+      <p>Ruajtjen dhe konfirmimin real do t’i shtojmë më vonë.</p>
+    </main>
+  );
 }
