@@ -3,12 +3,20 @@ import Link from "next/link";
 import { connection } from "next/server";
 import { lexoUdhetimet, type Udhetim } from "@/lib/udhetimet";
 import KartaUdhetimi from "@/lib/components/KartaUdhetimi";
+import Hyrja from "@/lib/components/Hyrja";
 
 export default function Home() {
   return (
     <main>
       <h1>RideShare · Udhëtimet për AAB</h1>
       <p>Zgjidh një nisje dhe lexo detajet para kërkesës.</p>
+
+      <Suspense fallback={<p>Po kontrollohet hyrja...</p>}>
+        <Hyrja />
+      </Suspense>
+      <p>
+        <Link href="/panel">Paneli i shoferit</Link>
+      </p>
 
       <Suspense fallback={<p>Po ngarkohen udhëtimet...</p>}>
         <ListaUdhetimeve />
