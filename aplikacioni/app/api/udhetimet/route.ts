@@ -6,13 +6,27 @@ export async function GET() {
   await connection();
 
   try {
-    return NextResponse.json(await lexoUdhetimet());
+    const udhetimet = await lexoUdhetimet();
+
+    const trips = udhetimet.map((udhetim) => ({
+      id: udhetim.id,
+      nisja: udhetim.nisja,
+      destinacioni: udhetim.destinacioni,
+      ora: udhetim.ora,
+      vendtakimi: udhetim.vendtakimi,
+      vende: udhetim.vende,
+    }));
+
+    return NextResponse.json(
+      { trips },
+      { headers: { "Cache-Control": "no-store" } }
+    );
   } catch (error) {
     console.error("Gabim gjatë leximit të udhëtimeve:", error);
 
     return NextResponse.json(
-      { error: "Nuk mund të lexohen udhëtimet." },
-      { status: 500 }
+      { error: "Lista nuk mund të lexohet tani." },
+      { status: 503, headers: { "Cache-Control": "no-store" } }
     );
   }
 }
